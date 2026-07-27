@@ -35,7 +35,6 @@ struct ContentView: View {
         .sheet(isPresented: Binding(get: { !hasSeenWelcome }, set: { if !$0 { hasSeenWelcome = true } })) {
             WelcomeView(onStart: { hasSeenWelcome = true })
                 .presentationDetents([.medium])
-                .presentationCornerRadius(28)
                 .interactiveDismissDisabled()
         }
     }
