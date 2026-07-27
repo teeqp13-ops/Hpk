@@ -1,0 +1,33 @@
+name: Build iOS IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build unsigned app
+        run: |
+          xcodebuild \
+            -project TVP3ND.xcodeproj \
+            -scheme TVP3ND \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+      - name: Package app artifact
+        run: |
+          mkdir -p artifact/Payload
+          cp -R build/Build/Products/Release-iphoneos/TVP3ND.app artifact/Payload/
+          cd artifact
+          zip -r ../TVP3ND-unsigned.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TVP3ND-unsigned-ipa
+          path: TVP3ND-unsigned.ipa
+          if-no-files-found: error
