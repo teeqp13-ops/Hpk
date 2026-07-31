@@ -29,8 +29,16 @@ struct ContentView: View {
                 .padding(.vertical, 10)
                 .background(.ultraThinMaterial, in: Capsule())
                 .padding(.bottom, 18)
+                .zIndex(1)
+            }
+
+            if browser.isLoading && !browser.isClosed {
+                LoadingView()
+                    .transition(.opacity)
+                    .zIndex(2)
             }
         }
+        .animation(.easeOut(duration: 0.25), value: browser.isLoading)
         .environment(\.layoutDirection, .rightToLeft)
         .sheet(isPresented: Binding(get: { !hasSeenWelcome }, set: { if !$0 { hasSeenWelcome = true } })) {
             WelcomeView(onStart: { hasSeenWelcome = true })
@@ -48,6 +56,43 @@ struct ContentView: View {
         }
         .tint(.white)
         .accessibilityLabel(title)
+    }
+}
+
+private struct LoadingView: View {
+    var body: some View {
+        ZStack {
+            LinearGradient(
+                colors: [Color(red: 0.02, green: 0.05, blue: 0.11), Color(red: 0.05, green: 0.12, blue: 0.22)],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
+
+            VStack(spacing: 18) {
+                ZStack {
+                    Circle()
+                        .fill(.cyan.opacity(0.14))
+                        .frame(width: 112, height: 112)
+                    Image(systemName: "tv.inset.filled")
+                        .font(.system(size: 46, weight: .medium))
+                        .foregroundStyle(.cyan)
+                }
+
+                Text("TV P3ND")
+                    .font(.title2.bold())
+                    .foregroundStyle(.white)
+
+                ProgressView()
+                    .tint(.cyan)
+                    .scaleEffect(1.25)
+
+                Text("جاري التحميل…")
+                    .font(.headline)
+                    .foregroundStyle(.white.opacity(0.82))
+            }
+        }
+        .environment(\.layoutDirection, .rightToLeft)
     }
 }
 
