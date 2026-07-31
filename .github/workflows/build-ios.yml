@@ -1,4 +1,4 @@
-name: Build Complete iOS IPA
+name: Build Complete iOS IPA & App
 
 on:
   push:
@@ -18,42 +18,26 @@ jobs:
         with:
           xcode-version: 'latest-stable'
 
-      - name: Create ExportOptions.plist
+      - name: Build Executable App
         run: |
-          cat <<EOF > ExportOptions.plist
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-              <key>method</key>
-              <string>development</string>
-              <key>compileBitcode</key>
-              <false/>
-              <key>thinning</key>
-              <string>&lt;none&gt;</string>
-          </dict>
-          </plist>
-          EOF
-
-      - name: Build Archive
-        run: |
-          xcodebuild archive \
+          xcodebuild build \
             -project TVP3ND.xcodeproj \
             -scheme TVP3ND \
             -sdk iphoneos \
-            -archivePath build/TVP3ND.xcarchive \
+            -configuration Release \
+            -derivedDataPath build/DerivedData \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO
 
-      - name: Build Payload and Pack IPA
+      - name: Package Full IPA Container
         run: |
           mkdir -p build/Payload
-          cp -R build/TVP3ND.xcarchive/Products/Applications/*.app build/Payload/
+          cp -R build/DerivedData/Build/Products/Release-iphoneos/*.app build/Payload/
           cd build
           zip -r TVP3ND_Complete.ipa Payload
           cd ..
 
-      - name: Upload Complete IPA Artifact
+      - name: Upload Complete IPA
         uses: actions/upload-artifact@v4
         with:
           name: TVP3ND-Full-IPA
