@@ -4,6 +4,7 @@ import UIKit
 
 final class BrowserState: ObservableObject {
     @Published var isClosed = false
+    @Published var isLoading = true
     weak var webView: WKWebView?
     func goBack() { if webView?.canGoBack == true { webView?.goBack() } }
     func goForward() { if webView?.canGoForward == true { webView?.goForward() } }
@@ -14,7 +15,7 @@ final class BrowserState: ObservableObject {
 
 struct TVWebView: UIViewRepresentable {
     @ObservedObject var state: BrowserState
-    func makeCoordinator() -> Coordinator { Coordinator() }
+    func makeCoordinator() -> Coordinator { Coordinator(state: state) }
 
     func makeUIView(context: Context) -> WKWebView {
         let configuration = WKWebViewConfiguration()
@@ -32,6 +33,28 @@ struct TVWebView: UIViewRepresentable {
     func updateUIView(_ uiView: WKWebView, context: Context) { state.webView = uiView }
 
     final class Coordinator: NSObject, WKNavigationDelegate {
+        let state: BrowserState
+
+        init(state: BrowserState) {
+            self.state = state
+        }
+
+        func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+            state.isLoading = true
+        }
+
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            state.isLoading = false
+        }
+
+        func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+            state.isLoading = false
+        }
+
+        func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+            state.isLoading = false
+        }
+
         func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
             guard let url = navigationAction.request.url else { return decisionHandler(.cancel) }
             let allowedHost = url.host == "tv.p3nd.fun" || url.host?.hasSuffix(".p3nd.fun") == true
