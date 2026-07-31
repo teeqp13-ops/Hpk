@@ -1,33 +1,60 @@
-name: Build iOS IPA
+name: Build Complete iOS IPA
 
 on:
-  workflow_dispatch:
   push:
-    branches: [main]
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-ipa:
     runs-on: macos-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Build unsigned app
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: 'latest-stable'
+
+      - name: Create ExportOptions.plist
         run: |
-          xcodebuild \
+          cat <<EOF > ExportOptions.plist
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>method</key>
+              <string>development</string>
+              <key>compileBitcode</key>
+              <false/>
+              <key>thinning</key>
+              <string>&lt;none&gt;</string>
+          </dict>
+          </plist>
+          EOF
+
+      - name: Build Archive
+        run: |
+          xcodebuild archive \
             -project TVP3ND.xcodeproj \
             -scheme TVP3ND \
-            -configuration Release \
             -sdk iphoneos \
-            -derivedDataPath build \
+            -archivePath build/TVP3ND.xcarchive \
             CODE_SIGNING_ALLOWED=NO \
-            build
-      - name: Package app artifact
+            CODE_SIGNING_REQUIRED=NO
+
+      - name: Build Payload and Pack IPA
         run: |
-          mkdir -p artifact/Payload
-          cp -R build/Build/Products/Release-iphoneos/TVP3ND.app artifact/Payload/
-          cd artifact
-          zip -r ../TVP3ND-unsigned.ipa Payload
-      - uses: actions/upload-artifact@v4
+          mkdir -p build/Payload
+          cp -R build/TVP3ND.xcarchive/Products/Applications/*.app build/Payload/
+          cd build
+          zip -r TVP3ND_Complete.ipa Payload
+          cd ..
+
+      - name: Upload Complete IPA Artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: TVP3ND-unsigned-ipa
-          path: TVP3ND-unsigned.ipa
-          if-no-files-found: error
+          name: TVP3ND-Full-IPA
+          path: build/TVP3ND_Complete.ipa
