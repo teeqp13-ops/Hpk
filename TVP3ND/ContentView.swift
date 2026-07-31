@@ -49,10 +49,14 @@ struct ContentView: View {
 
     private func actionButton(_ icon: String, _ title: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Label(title, systemImage: icon)
-                .font(.system(size: 13, weight: .semibold))
-                .labelStyle(.iconOnly)
-                .frame(width: 42, height: 42)
+            VStack(spacing: 4) {
+                Image(systemName: icon)
+                    .font(.system(size: 18, weight: .semibold))
+                Text(title)
+                    .font(.system(size: 10, weight: .semibold, design: .rounded))
+                    .lineLimit(1)
+            }
+            .frame(width: 52, height: 52)
         }
         .tint(.white)
         .accessibilityLabel(title)
@@ -80,7 +84,7 @@ private struct LoadingView: View {
                 }
 
                 Text("TV P3ND")
-                    .font(.title2.bold())
+                    .font(.system(size: 23, weight: .bold, design: .rounded))
                     .foregroundStyle(.white)
 
                 ProgressView()
@@ -88,7 +92,7 @@ private struct LoadingView: View {
                     .scaleEffect(1.25)
 
                 Text("جاري التحميل…")
-                    .font(.headline)
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
                     .foregroundStyle(.white.opacity(0.82))
             }
         }
@@ -104,7 +108,7 @@ private struct WelcomeView: View {
                 .font(.system(size: 50))
                 .foregroundStyle(.cyan)
             Text("مرحبًا بك في TV P3ND")
-                .font(.title2.bold())
+                .font(.system(size: 22, weight: .bold, design: .rounded))
             Text("استمتع بمشاهدة القنوات بسهولة. اسحب داخل الموقع للتصفح، ودوّر الشاشة لملء المشغل.")
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
