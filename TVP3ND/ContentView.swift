@@ -16,6 +16,34 @@ struct ContentView: View {
             } else {
                 TVWebView(state: browser)
                     .ignoresSafeArea(edges: .top)
+
+                if browser.isLoading {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .tint(.cyan)
+                        .scaleEffect(1.5)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(.black.opacity(0.3))
+                        .ignoresSafeArea()
+                }
+
+                if let errorMsg = browser.errorMessage {
+                    VStack(spacing: 16) {
+                        Image(systemName: "wifi.slash").font(.system(size: 42)).foregroundStyle(.red)
+                        Text(errorMsg)
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.primary)
+                        Button("إعادة المحاولة") { browser.retry() }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.cyan)
+                    }
+                    .padding(28)
+                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18))
+                    .padding(.horizontal, 24)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(.black.opacity(0.4))
+                    .ignoresSafeArea()
+                }
             }
 
             if !browser.isClosed {
