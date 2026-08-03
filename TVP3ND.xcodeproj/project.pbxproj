@@ -9,6 +9,7 @@
 		A10000000000000000000011 /* TVP3NDApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000001 /* TVP3NDApp.swift */; };
 		A10000000000000000000012 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000002 /* ContentView.swift */; };
 		A10000000000000000000013 /* TVWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000003 /* TVWebView.swift */; };
+		A10000000000000000000014 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -17,11 +18,12 @@
 		A10000000000000000000003 /* TVWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVWebView.swift; sourceTree = "<group>"; };
 		A10000000000000000000004 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A10000000000000000000005 /* TVP3ND.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TVP3ND.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000006 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		A10000000000000000000020 = {isa = PBXGroup; children = (A10000000000000000000021 /* TVP3ND */, A10000000000000000000022 /* Products */); sourceTree = "<group>"; };
-		A10000000000000000000021 /* TVP3ND */ = {isa = PBXGroup; children = (A10000000000000000000001 /* TVP3NDApp.swift */, A10000000000000000000002 /* ContentView.swift */, A10000000000000000000003 /* TVWebView.swift */, A10000000000000000000004 /* Info.plist */); path = TVP3ND; sourceTree = "<group>"; };
+		A10000000000000000000021 /* TVP3ND */ = {isa = PBXGroup; children = (A10000000000000000000001 /* TVP3NDApp.swift */, A10000000000000000000002 /* ContentView.swift */, A10000000000000000000003 /* TVWebView.swift */, A10000000000000000000006 /* Constants.swift */, A10000000000000000000004 /* Info.plist */); path = TVP3ND; sourceTree = "<group>"; };
 		A10000000000000000000022 /* Products */ = {isa = PBXGroup; children = (A10000000000000000000005 /* TVP3ND.app */); name = Products; sourceTree = "<group>"; };
 /* End PBXGroup section */
 
@@ -34,7 +36,7 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A10000000000000000000032 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000011 /* TVP3NDApp.swift in Sources */, A10000000000000000000012 /* ContentView.swift in Sources */, A10000000000000000000013 /* TVWebView.swift in Sources */); runOnlyForDeploymentPostprocessing = 0; };
+		A10000000000000000000032 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000011 /* TVP3NDApp.swift in Sources */, A10000000000000000000012 /* ContentView.swift in Sources */, A10000000000000000000013 /* TVWebView.swift in Sources */, A10000000000000000000014 /* Constants.swift in Sources */); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 /* Begin PBXFrameworksBuildPhase section */
 		A10000000000000000000033 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
